@@ -2,6 +2,9 @@ from fastapi import FastAPI
 
 app = FastAPI()
 
+from templates.routes import router as views_router
+# Incluir las rutas
+app.include_router(views_router)
 
 @app.get("/")
 async def root():

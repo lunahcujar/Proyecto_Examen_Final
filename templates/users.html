@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+
+{% block title %}Registro de Usuario{% endblock %}
+
+{% block content %}
+<style>
+    .registro-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        padding: 3rem 2rem;
+        gap: 3rem;
+        flex-wrap: wrap;
+        background-color: #f9f9f9;
+    }
+
+    .registro-img {
+        width: 100%;
+        max-width: 500px;
+        border-radius: 1.5rem;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        object-fit: cover;
+    }
+
+    .formulario {
+        background-color: #ffffff;
+        padding: 2.5rem;
+        border-radius: 1.2rem;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+        width: 100%;
+        max-width: 450px;
+        animation: slideUp 0.8s ease-in-out;
+    }
+
+    .formulario h2 {
+        text-align: center;
+        color: #a85d74;
+        margin-bottom: 1.8rem;
+    }
+
+    .formulario label {
+        font-weight: 500;
+        color: #444;
+        display: block;
+        margin-top: 1rem;
+    }
+
+    .formulario input,
+    .formulario select {
+        width: 100%;
+        padding: 0.75rem;
+        margin-top: 0.4rem;
+        border-radius: 10px;
+        border: 1px solid #ccc;
+        font-size: 1rem;
+    }
+
+    .formulario input[type="checkbox"] {
+        width: auto;
+        margin-right: 0.5rem;
+    }
+
+    .formulario button {
+        background-color: #a85d74;
+        color: white;
+        padding: 0.9rem;
+        margin-top: 1.5rem;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        width: 100%;
+        font-size: 1rem;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
+
+    .formulario button:hover {
+        background-color: #94455f;
+    }
+
+    #mensajeExito {
+        display: none;
+        text-align: center;
+        background-color: #e6f7e6;
+        color: #2d7a2d;
+        font-weight: bold;
+        border: 2px solid #a8e6a8;
+        border-radius: 10px;
+        padding: 1rem;
+        margin: 1rem auto;
+        width: 90%;
+        max-width: 500px;
+        animation: fadeIn 0.8s ease-in-out;
+    }
+
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+</style>
+
+<div class="registro-container">
+    <img src="/static/img/BLOG-LIMPIEZA-FACIAL-1005x800.jpg" alt="Cuidados de la piel" class="registro-img">
+
+    <form id="formularioRegistro" class="formulario" enctype="multipart/form-data">
+        <h2>Registro de Usuario</h2>
+
+        <label for="name">Nombre:</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="mail">Correo electrónico:</label>
+        <input type="email" id="mail" name="mail" required>
+
+
+        <label for="photo">Foto de perfil:</label>
+        <input type="file" id="photo" name="photo" accept="image/*">
+
+        <label>
+            <input type="checkbox" id="preferences" name="preferences">
+            Acepto recibir recomendaciones personalizadas
+        </label>
+
+        <button type="submit">Registrarse</button>
+    </form>
+</div>
+
+<div id="mensajeExito">✅ Usuario registrado correctamente.</div>
+
+<script>
+document.getElementById("formularioRegistro").addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append("name", e.target.name.value);
+    formData.append("mail", e.target.mail.value);
+    formData.append("type_skin", e.target.type_skin.value);
+    formData.append("preferences", e.target.preferences.checked);
+    formData.append("photo", e.target.photo.files[0]);
+
+    try {
+        const response = await fetch("/api/usuarios", {
+            method: "POST",
+            body: formData
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            localStorage.setItem("user_id", result.id);
+
+            const mensaje = document.getElementById("mensajeExito");
+            mensaje.style.display = "block";
+
+            // Redirigir a /rutina después de mostrar el mensaje
+            setTimeout(() => {
+                window.location.href = "/rutina";
+            }, 3000);
+        } else {
+            alert("Error al registrar usuario: " + (result.detail || "Revisa los campos"));
+        }
+    } catch (error) {
+        alert("Error de conexión con el servidor.");
+    }
+});
+</script>
+
+
+{% endblock %}
