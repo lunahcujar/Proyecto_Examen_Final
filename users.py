@@ -6,7 +6,7 @@ from pydantic import BaseModel, Field
 from typing import Optional
 from enum import Enum
 
-from dbconecttion import Base, engine
+from conexion_db import Base, engine
 
 
 
