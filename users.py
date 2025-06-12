@@ -28,4 +28,4 @@ class UserCreate(BaseModel):
     class Config:
         orm_mode = True
 
-#token: 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
+#token: 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
