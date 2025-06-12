@@ -12,8 +12,7 @@ CLEVER_DATABASE = os.getenv("DB_NAME")
 CLEVER_USER = os.getenv("DB_USER")
 CLEVER_PASSWORD = os.getenv("DB_PASSWORD")
 
-DATABASE_URL = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
-
+DATABASE_URL = f"postgresql://updhw59irb7gq1tcmrh5:m04DQBnrUAwKPl8sjbg7f8Mb3bhSfm@bk4yvn3qretqi8utw5yj-postgresql.services.clever-cloud.com:50013/bk4yvn3qretqi8utw5yj"
 engine = create_engine(
     DATABASE_URL,
     pool_size=3,
